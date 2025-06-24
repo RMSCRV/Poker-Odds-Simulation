@@ -472,6 +472,15 @@ func TestEvaluateDraw(t *testing.T) {
 		expectedRank            HandRank
 	}{
 		{
+			name:        "Royal Flush with 1 players",
+			highestRank: RoyalFlush,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 13, Suit: deck.Spades}, {Rank: 12, Suit: deck.Spades}, {Rank: 11, Suit: deck.Spades}, {Rank: 10, Suit: deck.Spades}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    RoyalFlush,
+		},
+		{
 			name:        "Royal Flush with 2 players",
 			highestRank: RoyalFlush,
 			highestRankPlayersHands: map[int][]deck.Card{
@@ -493,6 +502,16 @@ func TestEvaluateDraw(t *testing.T) {
 			expectedRank:    StraightFlush,
 		},
 		{
+			name:        "Straight Flush with edge 1",
+			highestRank: StraightFlush,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 10, Suit: deck.Hearts}, {Rank: 9, Suit: deck.Hearts}, {Rank: 8, Suit: deck.Hearts}, {Rank: 7, Suit: deck.Hearts}, {Rank: 6, Suit: deck.Hearts}},
+				2: {{Rank: 10, Suit: deck.Hearts}, {Rank: 9, Suit: deck.Hearts}, {Rank: 8, Suit: deck.Hearts}, {Rank: 7, Suit: deck.Hearts}, {Rank: 6, Suit: deck.Hearts}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    StraightFlush,
+		},
+		{
 			name:        "Four of a Kind with 4 players",
 			highestRank: FourOfAKind,
 			highestRankPlayersHands: map[int][]deck.Card{
@@ -502,6 +521,26 @@ func TestEvaluateDraw(t *testing.T) {
 				4: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 3, Suit: deck.Diamonds}, {Rank: 14, Suit: deck.Hearts}},
 			},
 			expectedWinners: []int{3},
+			expectedRank:    FourOfAKind,
+		},
+		{
+			name:        "Four of a Kind with edge 1",
+			highestRank: FourOfAKind,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 3, Suit: deck.Diamonds}, {Rank: 14, Suit: deck.Spades}},
+				2: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 3, Suit: deck.Diamonds}, {Rank: 14, Suit: deck.Spades}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    FourOfAKind,
+		},
+		{
+			name:        "Four of a Kind with edge 2",
+			highestRank: FourOfAKind,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 3, Suit: deck.Diamonds}, {Rank: 2, Suit: deck.Spades}},
+				2: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 3, Suit: deck.Diamonds}, {Rank: 14, Suit: deck.Spades}},
+			},
+			expectedWinners: []int{2},
 			expectedRank:    FourOfAKind,
 		},
 		{
@@ -518,6 +557,27 @@ func TestEvaluateDraw(t *testing.T) {
 			expectedRank:    FullHouse,
 		},
 		{
+			name:        "Full House with edge 1",
+			highestRank: FullHouse,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 13, Suit: deck.Clubs}, {Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 11, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}},
+
+				2: {{Rank: 13, Suit: deck.Clubs}, {Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 12, Suit: deck.Hearts}, {Rank: 12, Suit: deck.Clubs}},
+			},
+			expectedWinners: []int{2},
+			expectedRank:    FullHouse,
+		},
+		{
+			name:        "Full House with edge 2",
+			highestRank: FullHouse,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 13, Suit: deck.Clubs}, {Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 11, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}},
+				2: {{Rank: 13, Suit: deck.Clubs}, {Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 11, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    FullHouse,
+		},
+		{
 			name:        "Flush with 3 players",
 			highestRank: Flush,
 			highestRankPlayersHands: map[int][]deck.Card{
@@ -529,6 +589,26 @@ func TestEvaluateDraw(t *testing.T) {
 			expectedRank:    Flush,
 		},
 		{
+			name:        "Flush edge 1",
+			highestRank: Flush,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 13, Suit: deck.Spades}, {Rank: 11, Suit: deck.Spades}, {Rank: 10, Suit: deck.Spades}, {Rank: 7, Suit: deck.Spades}, {Rank: 5, Suit: deck.Spades}},
+				2: {{Rank: 13, Suit: deck.Spades}, {Rank: 11, Suit: deck.Spades}, {Rank: 10, Suit: deck.Spades}, {Rank: 7, Suit: deck.Spades}, {Rank: 5, Suit: deck.Spades}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    Flush,
+		},
+		{
+			name:        "Flush edge 2",
+			highestRank: Flush,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 13, Suit: deck.Spades}, {Rank: 11, Suit: deck.Spades}, {Rank: 10, Suit: deck.Spades}, {Rank: 7, Suit: deck.Spades}, {Rank: 5, Suit: deck.Spades}},
+				2: {{Rank: 13, Suit: deck.Spades}, {Rank: 11, Suit: deck.Spades}, {Rank: 10, Suit: deck.Spades}, {Rank: 7, Suit: deck.Spades}, {Rank: 4, Suit: deck.Spades}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    Flush,
+		},
+		{
 			name:        "Straight with 2 players",
 			highestRank: Straight,
 			highestRankPlayersHands: map[int][]deck.Card{
@@ -536,6 +616,16 @@ func TestEvaluateDraw(t *testing.T) {
 				2: {{Rank: 7, Suit: deck.Hearts}, {Rank: 6, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Spades}, {Rank: 4, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Diamonds}},
 			},
 			expectedWinners: []int{2},
+			expectedRank:    Straight,
+		},
+		{
+			name:        "Straight with 2 players edge 1",
+			highestRank: Straight,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 6, Suit: deck.Clubs}, {Rank: 5, Suit: deck.Diamonds}, {Rank: 4, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 2, Suit: deck.Clubs}},
+				2: {{Rank: 6, Suit: deck.Clubs}, {Rank: 5, Suit: deck.Diamonds}, {Rank: 4, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 2, Suit: deck.Clubs}},
+			},
+			expectedWinners: []int{1, 2},
 			expectedRank:    Straight,
 		},
 		{
@@ -551,7 +641,38 @@ func TestEvaluateDraw(t *testing.T) {
 			expectedRank:    ThreeOfAKind,
 		},
 		{
+			name:        "Three of a Kind with 2 players edge 1",
+			highestRank: ThreeOfAKind,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 14, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
+				2: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 14, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    ThreeOfAKind,
+		},
+		{
+			name:        "Three of a Kind with 2 players edge 2",
+			highestRank: ThreeOfAKind,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 14, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
+				2: {{Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 3, Suit: deck.Hearts}, {Rank: 14, Suit: deck.Spades}, {Rank: 6, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    ThreeOfAKind,
+		},
+		{
 			name:        "Two Pair with 3 players",
+			highestRank: TwoPair,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
+				2: {{Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 4, Suit: deck.Clubs}, {Rank: 4, Suit: deck.Spades}, {Rank: 8, Suit: deck.Diamonds}},
+				3: {{Rank: 12, Suit: deck.Spades}, {Rank: 12, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Clubs}, {Rank: 5, Suit: deck.Spades}, {Rank: 9, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    TwoPair,
+		},
+		{
+			name:        "Two Pair with 3 players edge 1",
 			highestRank: TwoPair,
 			highestRankPlayersHands: map[int][]deck.Card{
 				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
@@ -563,7 +684,19 @@ func TestEvaluateDraw(t *testing.T) {
 			expectedRank:    TwoPair,
 		},
 		{
-			name:        "One Pair with 2 players",
+			name:        "Two Pair with 3 players edge 2",
+			highestRank: TwoPair,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}},
+				2: {{Rank: 13, Suit: deck.Spades}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 4, Suit: deck.Clubs}, {Rank: 4, Suit: deck.Spades}, {Rank: 8, Suit: deck.Diamonds}},
+				3: {{Rank: 12, Suit: deck.Spades}, {Rank: 12, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Clubs}, {Rank: 5, Suit: deck.Spades}, {Rank: 9, Suit: deck.Diamonds}},
+				4: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 3, Suit: deck.Clubs}, {Rank: 3, Suit: deck.Spades}, {Rank: 6, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    TwoPair,
+		},
+		{
+			name:        "One Pair with 3 players",
 			highestRank: OnePair,
 			highestRankPlayersHands: map[int][]deck.Card{
 				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 13, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Hearts}},
@@ -571,6 +704,26 @@ func TestEvaluateDraw(t *testing.T) {
 				3: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 13, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Hearts}},
 			},
 			expectedWinners: []int{1, 3},
+			expectedRank:    OnePair,
+		},
+		{
+			name:        "One Pair with 2 players edge 1",
+			highestRank: OnePair,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 13, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Hearts}},
+				2: {{Rank: 13, Suit: deck.Clubs}, {Rank: 13, Suit: deck.Diamonds}, {Rank: 12, Suit: deck.Spades}, {Rank: 8, Suit: deck.Diamonds}, {Rank: 6, Suit: deck.Hearts}},
+			},
+			expectedWinners: []int{1},
+			expectedRank:    OnePair,
+		},
+		{
+			name:        "One Pair with 2 players edge 2",
+			highestRank: OnePair,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 13, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}, {Rank: 5, Suit: deck.Hearts}},
+				2: {{Rank: 14, Suit: deck.Spades}, {Rank: 14, Suit: deck.Diamonds}, {Rank: 13, Suit: deck.Spades}, {Rank: 7, Suit: deck.Diamonds}, {Rank: 4, Suit: deck.Hearts}},
+			},
+			expectedWinners: []int{1},
 			expectedRank:    OnePair,
 		},
 		{
@@ -582,6 +735,26 @@ func TestEvaluateDraw(t *testing.T) {
 				3: {{Rank: 14, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}, {Rank: 9, Suit: deck.Spades}, {Rank: 7, Suit: deck.Clubs}, {Rank: 2, Suit: deck.Diamonds}},
 			},
 			expectedWinners: []int{3},
+			expectedRank:    HighCard,
+		},
+		{
+			name:        "High Card with edge 1",
+			highestRank: HighCard,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}, {Rank: 9, Suit: deck.Spades}, {Rank: 7, Suit: deck.Clubs}, {Rank: 2, Suit: deck.Diamonds}},
+				2: {{Rank: 14, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}, {Rank: 9, Suit: deck.Spades}, {Rank: 7, Suit: deck.Clubs}, {Rank: 2, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{1, 2},
+			expectedRank:    HighCard,
+		},
+		{
+			name:        "High Card with edge 2",
+			highestRank: HighCard,
+			highestRankPlayersHands: map[int][]deck.Card{
+				1: {{Rank: 14, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}, {Rank: 9, Suit: deck.Spades}, {Rank: 7, Suit: deck.Clubs}, {Rank: 2, Suit: deck.Diamonds}},
+				2: {{Rank: 14, Suit: deck.Hearts}, {Rank: 11, Suit: deck.Clubs}, {Rank: 9, Suit: deck.Spades}, {Rank: 7, Suit: deck.Clubs}, {Rank: 4, Suit: deck.Diamonds}},
+			},
+			expectedWinners: []int{2},
 			expectedRank:    HighCard,
 		},
 	}

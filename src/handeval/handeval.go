@@ -357,14 +357,6 @@ func GetHandStraight(cards []deck.Card, highestRank int) []deck.Card {
 	toPickCard := highestRank
 	for _, card := range cards {
 
-		if toPickCard == 1 {
-			if card.Rank == 14 {
-				result = append(result, card)
-				toPickCard = toPickCard - 1
-			}
-
-		}
-
 		//if it has entered previus if it is never going to enter this if as there is no card Rank 1
 		if card.Rank == toPickCard {
 			result = append(result, card)
@@ -438,7 +430,6 @@ func EvaluateDraw(highestRankPlayersHands map[int][]deck.Card, highestRank HandR
 	}
 
 	if highestRank == StraightFlush {
-		println("Straight Flush Draw")
 		//check if someones straight is bigger
 		var winnerIds []int
 		var currentBiggestInitialCard deck.Card
@@ -511,16 +502,26 @@ func EvaluateDraw(highestRankPlayersHands map[int][]deck.Card, highestRank HandR
 	//highest card first always
 	if highestRank == Flush {
 		var winnerIds []int
-		var currentBiggestInitialCard deck.Card
+		var currentBiggestCards []deck.Card
 
 		for playerId, hand := range highestRankPlayersHands {
-			if hand[0].Rank > currentBiggestInitialCard.Rank {
+			if len(currentBiggestCards) == 0 {
 				winnerIds = []int{playerId}
-				currentBiggestInitialCard = hand[0]
-			} else if hand[0].Rank == currentBiggestInitialCard.Rank {
-				winnerIds = append(winnerIds, playerId)
+				currentBiggestCards = hand
+				continue
 			}
-
+			for i := 0; i < len(hand); i++ {
+				if hand[i].Rank > currentBiggestCards[i].Rank {
+					winnerIds = []int{playerId}
+					currentBiggestCards = hand
+					break
+				} else if hand[i].Rank < currentBiggestCards[i].Rank {
+					break
+				}
+				if i == len(hand)-1 {
+					winnerIds = append(winnerIds, playerId)
+				}
+			}
 		}
 
 		return winnerIds, Flush
